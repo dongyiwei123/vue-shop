@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
+
+// 防止点击登录按钮报错
+const VueRouterPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(to) {
+  return VueRouterPush.call(this, to).catch(err => err)
+}
 const routes = [
   {
     path: '/',
@@ -15,7 +21,20 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../components/Home.vue')
+    redirect: '/welcome',
+    component: () => import('../components/Home.vue'),
+    children: [
+      {
+        path: '/welcome',
+        name: 'welcome',
+        component: () => import('../components/Welcome.vue')
+      },
+      {
+        path: '/users',
+        name: 'users',
+        component: () => import('../components/users/Users.vue')
+      }
+    ]
   }
 ]
 const router = new VueRouter({
