@@ -41,7 +41,7 @@
             <!-- 修改 -->
             <el-button type="primary" icon="el-icon-edit" @click="showEdit(row.id)"></el-button>
             <!-- 删除 -->
-            <el-button type="danger" icon="el-icon-delete"></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="removeUser(row.id)"></el-button>
             <!-- 分配角色 -->
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
               <el-button type="warning" icon="el-icon-share"></el-button>
@@ -287,6 +287,21 @@ export default {
         this.getUserList()
         this.$message.success('用户修改成功')
       })
+    },
+    // 移除用户
+    async  removeUser(id) {
+      try {
+        await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await this.$http.delete(`users/${id}`)
+        this.getUserList()
+        this.$message.success('删除成功')
+      } catch {
+        this.$message.success('删除失败')
+      }
     }
   }
 }
