@@ -156,6 +156,7 @@ export default {
         children: 'children',
         label: 'authName'
       },
+      // tree显示id
       defKeys: [],
       // 分配角色id
       roleId: '',
